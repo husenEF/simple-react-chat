@@ -40,7 +40,7 @@ class Login extends Component {
         <form autoComplete="off" onSubmit={this.handleSubmit}>
           <h1>
             Login to
-            <Link to="/">Chatty</Link>
+            <Link to="/">Chat Apps</Link>
           </h1>
           <p>Fill in the form below to login to your account.</p>
           <div>

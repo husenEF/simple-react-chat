@@ -1,25 +1,103 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import {
+  Route,
+  BrowserRouter as Router,
+  Switch,
+  Redirect,
+} from "react-router-dom";
 
-function App() {
+//firebase
+import { auth } from "./services/firebase";
+
+import { Home, Chat, Login, Signup } from "./pages";
+
+import "./App.css";
+
+const PrivateRoute = ({ component: Component, authenticated, ...rest }) => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Route
+      {...rest}
+      render={(props) =>
+        authenticated === true ? (
+          <Component {...props} />
+        ) : (
+          <Redirect
+            to={{ pathname: "/login", state: { from: props.location } }}
+          />
+        )
+      }
+    />
   );
+};
+
+const PublicRoute = ({ component: Component, authenticated, ...rest }) => {
+  return (
+    <Route
+      {...rest}
+      render={(props) =>
+        authenticated === false ? (
+          <Component {...props} />
+        ) : (
+          <Redirect to="/chat" />
+        )
+      }
+    />
+  );
+};
+class App extends Component {
+  state = {
+    loading: true,
+    authenticated: false,
+  };
+
+  componentDidMount() {
+    auth().onAuthStateChanged((user) => {
+      console.log({ user });
+      if (user) {
+        this.setState({
+          authenticated: true,
+          loading: false,
+        });
+      } else {
+        this.setState({
+          authenticated: false,
+          loading: false,
+        });
+      }
+    });
+  }
+  render() {
+    const { loading, authenticated } = this.state;
+    console.log({ authenticated });
+    return (
+      <div className="App">
+        {loading ? (
+          <h2>Loading....</h2>
+        ) : (
+          <Router>
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <PrivateRoute
+                path="/chat"
+                authenticated={authenticated}
+                component={Chat}
+              />
+              <PublicRoute
+                path="/signup"
+                authenticated={authenticated}
+                component={Signup}
+              />
+              <PublicRoute
+                path="/login"
+                authenticated={authenticated}
+                component={Login}
+              />
+            </Switch>
+          </Router>
+        )}
+      </div>
+    );
+  }
 }
 
 export default App;

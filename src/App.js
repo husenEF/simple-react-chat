@@ -70,7 +70,7 @@ class App extends Component {
     const { loading, authenticated } = this.state;
     console.log({ authenticated });
     return (
-      <div className="App">
+      <div className="md:container md:mx-auto p-5 bg-yellow-200 h-screen" id="App">
         {loading ? (
           <h2>Loading....</h2>
         ) : (
@@ -78,7 +78,7 @@ class App extends Component {
             <Switch>
               <Route exact path="/" component={Home} />
               <PrivateRoute
-                path="/chat"
+                path="/chat/:id"
                 authenticated={authenticated}
                 component={Chat}
               />

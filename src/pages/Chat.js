@@ -1,7 +1,8 @@
 import React, { Component } from "react";
+import { withRouter, Redirect } from "react-router-dom";
 
 import { auth, db } from "../services/firebase";
-
+import { logout } from "../helpers/auth";
 class Chat extends Component {
   state = {
     user: null,
@@ -54,15 +55,27 @@ class Chat extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  handlingLogout = () => {
+    logout();
+    <Redirect to="/login" />;
+  };
   render() {
+    const {
+      match: { params },
+    } = this.props;
     const { user } = this.state;
+    console.log({ id: params.id });
     return (
-      <div className="container mx-auto bg-yellow-200">
+      <div className="md:container md:mx-auto p-5 bg-yellow-200">
         <h1>Chat</h1>
-        <div>
-          <div className="chats">
+        <div className="flex flex-col">
+          <div className="chats flex-1">
             {this.state.chats.map((chat) => {
-              return <p key={chat.timestamp}>{chat.content}</p>;
+              return (
+                <p key={chat.timestamp}>
+                  {chat.content} {chat.opposite || "none"}
+                </p>
+              );
             })}
           </div>
           <form onSubmit={this.handleSubmit}>
@@ -70,13 +83,21 @@ class Chat extends Component {
               name="content"
               onChange={this.handleChange}
               value={this.state.content}
-            ></input>
+            />
             {this.state.error ? <p>{this.state.writeError}</p> : null}
             <button type="submit">Send</button>
           </form>
           {user && (
-            <div>
-              Login in as: <strong>{this.state.user.email}</strong>
+            <div className="">
+              <p>
+                Login in as: <strong>{this.state.user.email}</strong>
+              </p>
+              <button
+                className="bg-red-300 rounded p-1 text-white"
+                onClick={logout}
+              >
+                logout
+              </button>
             </div>
           )}
         </div>
@@ -85,4 +106,4 @@ class Chat extends Component {
   }
 }
 
-export default Chat;
+export default withRouter(Chat);

@@ -57,7 +57,7 @@ class Chat extends Component {
   render() {
     const { user } = this.state;
     return (
-      <div>
+      <div className="container mx-auto bg-yellow-200">
         <h1>Chat</h1>
         <div>
           <div className="chats">

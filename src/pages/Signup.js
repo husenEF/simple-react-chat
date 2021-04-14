@@ -63,7 +63,7 @@ class Signup extends Component {
                 className="mb-2 tracking-wide font-bold text-grey-darkest"
                 for="first_name"
               >
-                Your Email
+                Your Password
               </label>
               <input
                 className="border py-2 px-3 text-grey-darkest md:mr-2"
@@ -81,12 +81,11 @@ class Signup extends Component {
               )}
               <button
                 type="submit"
-                className="bg-blue-200 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded mx-auto "
+                className="bg-blue-400 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded mx-auto "
               >
                 Sign up
               </button>
             </div>
-            <hr></hr>
             <p>
               Already have an account? <Link to="/login">Login</Link>
             </p>

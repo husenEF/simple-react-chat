@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
+import { db } from "../services/firebase";
 import { signup } from "../helpers/auth";
 
 class Signup extends Component {
@@ -21,11 +22,18 @@ class Signup extends Component {
     try {
       const register = await signup(email, password);
 
-      console.log({ register });
+      await db.ref(`users/${register.user.uid}`).set({
+        email,
+        timestamp: Date.now(),
+        uid: register.user.uid,
+        isOnline: false,
+      });
+      this.setState({ email: "", password: "" });
     } catch (error) {
       this.setState({ error: error.message });
     }
   };
+
   render() {
     return (
       <div className="flex items-center h-screen w-full bg-teal-lighter">
@@ -35,6 +43,7 @@ class Signup extends Component {
             <Link to="/">Chatty</Link>
           </h1>
           <form
+            autoComplete="off"
             onSubmit={this.handleSubmit}
             className="mb-4 md:flex md:flex-wrap md:justify-between"
           >

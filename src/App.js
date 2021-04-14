@@ -38,7 +38,7 @@ const PublicRoute = ({ component: Component, authenticated, ...rest }) => {
         authenticated === false ? (
           <Component {...props} />
         ) : (
-          <Redirect to="/chat" />
+          <Redirect to="/chat/1" />
         )
       }
     />
@@ -52,7 +52,7 @@ class App extends Component {
 
   componentDidMount() {
     auth().onAuthStateChanged((user) => {
-      console.log({ user });
+      // console.log({ user });
       if (user) {
         this.setState({
           authenticated: true,
@@ -68,7 +68,7 @@ class App extends Component {
   }
   render() {
     const { loading, authenticated } = this.state;
-    console.log({ authenticated });
+    // console.log({ authenticated });
     return (
       <div className="md:container md:mx-auto p-5 bg-yellow-200 h-screen" id="App">
         {loading ? (

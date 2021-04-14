@@ -14,6 +14,7 @@ class Chat extends Component {
 
   componentDidMount() {
     this.firstRun();
+    // logout()
   }
 
   firstRun = async () => {
@@ -29,6 +30,7 @@ class Chat extends Component {
         snapshot.forEach((snap) => {
           chats.push(snap.val());
         });
+        console.log({ chats });
         this.setState({ chats });
       });
     } catch (error) {

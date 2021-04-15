@@ -30,7 +30,7 @@ class Chat extends Component {
         snapshot.forEach((snap) => {
           chats.push(snap.val());
         });
-        console.log({ chats });
+        // console.log({ chats });
         this.setState({ chats });
       });
     } catch (error) {
@@ -66,7 +66,7 @@ class Chat extends Component {
       match: { params },
     } = this.props;
     const { user } = this.state;
-    console.log({ id: params.id });
+    // console.log({ id: params.id });
     return (
       <div className="md:container md:mx-auto p-5 bg-yellow-200">
         <h1>Chat</h1>

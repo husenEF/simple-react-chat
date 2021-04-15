@@ -6,9 +6,10 @@ import {
   Redirect,
 } from "react-router-dom";
 
+import { Provider } from "react-redux";
 //firebase
 import { auth, db } from "./services/firebase";
-
+import store from "./redux/store";
 import { Home, Chat, Login, Signup } from "./pages";
 
 import "./App.css";
@@ -81,7 +82,7 @@ class App extends Component {
 
   async updateDb() {
     const { user } = this.state;
-    console.log("here", { user });
+    // console.log("here", { user });
     try {
       let dbu = {};
       await db.ref(`users/${user.uid}`).on("value", (snapshop) => {
@@ -91,7 +92,7 @@ class App extends Component {
       dbu.isOnline = true;
       await db.ref(`users/${user.uid}`).set(dbu);
     } catch (error) {
-      console.log({ error });
+      // console.log({ error });
     }
   }
   render() {
@@ -131,4 +132,10 @@ class App extends Component {
   }
 }
 
-export default App;
+export default (props) => {
+  return (
+    <Provider store={store}>
+      <App {...props} />
+    </Provider>
+  );
+};

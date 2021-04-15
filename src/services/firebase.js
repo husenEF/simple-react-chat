@@ -1,6 +1,6 @@
 import firebase from "firebase";
 
-console.log({ proses: process.env });
+// console.log({ proses: process.env });
 const conf = {
   databaseURL: process.env.REACT_APP_DATABASE_URL,
   apiKey: process.env.REACT_APP_API_KEY,

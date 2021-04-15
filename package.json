@@ -10,8 +10,10 @@
     "firebase": "^8.4.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-redux": "^7.2.3",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "redux": "^4.0.5",
     "web-vitals": "^1.0.1"
   },
   "scripts": {
@@ -42,6 +44,7 @@
     "@tailwindcss/postcss7-compat": "^2.1.0",
     "autoprefixer": "^9.0.0",
     "postcss": "^7",
+    "redux-devtools": "^3.7.0",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat"
   }
 }

@@ -1,10 +1,12 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { auth, db } from "../services/firebase";
 
 class Home extends Component {
   state = { userlist: [] };
 
   componentDidMount() {
+    console.log({ props: this.props });
     this.firstLoad();
   }
 
@@ -19,15 +21,32 @@ class Home extends Component {
       });
       this.setState({ userlist: listUser });
     } catch (error) {
-      console.log({ error });
+      // console.log({ error });
     }
   }
 
   render() {
     const { userlist } = this.state;
-    console.log({ userlist });
-    return <div>Halo</div>;
+    const { counter, inc } = this.props;
+    // console.log({ userlist });
+    return (
+      <div>
+        Halo
+        <p>counter :{counter}</p>
+        <button className="" onClick={() => inc()}>
+          inc
+        </button>
+      </div>
+    );
   }
 }
 
-export default Home;
+const mapStateToProps = (state) => {
+  return state;
+};
+
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  inc: () => dispatch({ type: "INC" }),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

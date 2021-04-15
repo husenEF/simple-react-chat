@@ -1,3 +1,7 @@
+import { combineReducers } from "redux";
+import userReducer from "./users/reducer";
+import chatReducer from "./chat/reducer";
+
 const initialState = {
   isLogin: false,
   counter: 0,
@@ -13,4 +17,10 @@ const reducer = (state = initialState, action) => {
   }
 };
 
-export default reducer;
+const rootReducer = combineReducers({
+  user: userReducer,
+  chat: chatReducer,
+  demo: reducer,
+});
+
+export default rootReducer;

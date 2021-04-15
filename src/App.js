@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import {
   Route,
   BrowserRouter as Router,
@@ -6,10 +6,13 @@ import {
   Redirect,
 } from "react-router-dom";
 
-import { Provider } from "react-redux";
-//firebase
-import { auth, db } from "./services/firebase";
+import { Provider, useDispatch, useSelector } from "react-redux";
 import store from "./redux/store";
+
+import { checkUser } from "./redux/users/action";
+//firebase
+// import { auth, db } from "./services/firebase";
+
 import { Home, Chat, Login, Signup } from "./pages";
 
 import "./App.css";
@@ -45,92 +48,51 @@ const PublicRoute = ({ component: Component, authenticated, ...rest }) => {
     />
   );
 };
-class App extends Component {
-  state = {
-    loading: true,
-    authenticated: false,
-    user: null,
-  };
 
-  componentDidMount() {
-    auth().onAuthStateChanged(async (user) => {
-      // console.log({ user });
-      if (user) {
-        this.setState(
-          {
-            authenticated: true,
-            loading: false,
-            user,
-          },
-          () => this.updateDb()
-        );
+const App = () => {
+  const dispatch = useDispatch();
+  // const [loading, setLoading] = useState(true);
+  const [authenticated, setAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
 
-        // db.ref(`users/${user.uid}`).set({
-        //   email: user.email,
-        //   timestamp: Date.now(),
-        //   uid: user.uid,
-        //   isOnline: false,
-        // });
-      } else {
-        this.setState({
-          authenticated: false,
-          loading: false,
-        });
-      }
-    });
-  }
+  const { loading, isLogin, users } = useSelector((state) => state.user);
+  console.log("app", { loading, isLogin, users });
 
-  async updateDb() {
-    const { user } = this.state;
-    // console.log("here", { user });
-    try {
-      let dbu = {};
-      await db.ref(`users/${user.uid}`).on("value", (snapshop) => {
-        // return snapshop.val();
-        dbu = snapshop.val();
-      });
-      dbu.isOnline = true;
-      await db.ref(`users/${user.uid}`).set(dbu);
-    } catch (error) {
-      // console.log({ error });
-    }
-  }
-  render() {
-    const { loading, authenticated } = this.state;
-    // console.log({ authenticated });
-    return (
-      <div
-        className="md:container md:mx-auto p-5 bg-yellow-200 h-screen"
-        id="App"
-      >
-        {loading ? (
-          <h2>Loading....</h2>
-        ) : (
-          <Router>
-            <Switch>
-              <Route exact path="/" component={Home} />
-              <PrivateRoute
-                path="/chat/:id"
-                authenticated={authenticated}
-                component={Chat}
-              />
-              <PublicRoute
-                path="/signup"
-                authenticated={authenticated}
-                component={Signup}
-              />
-              <PublicRoute
-                path="/login"
-                authenticated={authenticated}
-                component={Login}
-              />
-            </Switch>
-          </Router>
-        )}
-      </div>
-    );
-  }
-}
+  useState(() => {
+    dispatch(checkUser());
+  }, []);
+  return (
+    <div
+      className="md:container md:mx-auto p-5 bg-yellow-200 h-screen"
+      id="App"
+    >
+      {loading ? (
+        <h2>Loading....</h2>
+      ) : (
+        <Router>
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <PrivateRoute
+              path="/chat/:id"
+              authenticated={authenticated}
+              component={Chat}
+            />
+            <PublicRoute
+              path="/signup"
+              authenticated={authenticated}
+              component={Signup}
+            />
+            <PublicRoute
+              path="/login"
+              authenticated={authenticated}
+              component={Login}
+            />
+          </Switch>
+        </Router>
+      )}
+    </div>
+  );
+};
 
 export default (props) => {
   return (

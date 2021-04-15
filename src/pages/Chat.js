@@ -62,9 +62,9 @@ class Chat extends Component {
     <Redirect to="/login" />;
   };
   render() {
-    const {
-      match: { params },
-    } = this.props;
+    // const {
+    //   match: { params },
+    // } = this.props;
     const { user } = this.state;
     // console.log({ id: params.id });
     return (

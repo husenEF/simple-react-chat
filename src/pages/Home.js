@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { auth, db } from "../services/firebase";
+import { db } from "../services/firebase";
 
 class Home extends Component {
   state = { userlist: [] };
 
   componentDidMount() {
-    console.log({ props: this.props });
+    // console.log({ props: this.props });
     this.firstLoad();
   }
 

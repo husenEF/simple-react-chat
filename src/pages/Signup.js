@@ -21,7 +21,6 @@ class Signup extends Component {
     const { email, password } = this.state;
     try {
       const register = await signup(email, password);
-
       await db.ref(`users/${register.user.uid}`).set({
         email,
         timestamp: Date.now(),

@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 
 //firebase
-import { auth } from "./services/firebase";
+import { auth, db } from "./services/firebase";
 
 import { Home, Chat, Login, Signup } from "./pages";
 
@@ -48,16 +48,28 @@ class App extends Component {
   state = {
     loading: true,
     authenticated: false,
+    user: null,
   };
 
   componentDidMount() {
-    auth().onAuthStateChanged((user) => {
+    auth().onAuthStateChanged(async (user) => {
       // console.log({ user });
       if (user) {
-        this.setState({
-          authenticated: true,
-          loading: false,
-        });
+        this.setState(
+          {
+            authenticated: true,
+            loading: false,
+            user,
+          },
+          () => this.updateDb()
+        );
+
+        // db.ref(`users/${user.uid}`).set({
+        //   email: user.email,
+        //   timestamp: Date.now(),
+        //   uid: user.uid,
+        //   isOnline: false,
+        // });
       } else {
         this.setState({
           authenticated: false,
@@ -66,11 +78,30 @@ class App extends Component {
       }
     });
   }
+
+  async updateDb() {
+    const { user } = this.state;
+    console.log("here", { user });
+    try {
+      let dbu = {};
+      await db.ref(`users/${user.uid}`).on("value", (snapshop) => {
+        // return snapshop.val();
+        dbu = snapshop.val();
+      });
+      dbu.isOnline = true;
+      await db.ref(`users/${user.uid}`).set(dbu);
+    } catch (error) {
+      console.log({ error });
+    }
+  }
   render() {
     const { loading, authenticated } = this.state;
     // console.log({ authenticated });
     return (
-      <div className="md:container md:mx-auto p-5 bg-yellow-200 h-screen" id="App">
+      <div
+        className="md:container md:mx-auto p-5 bg-yellow-200 h-screen"
+        id="App"
+      >
         {loading ? (
           <h2>Loading....</h2>
         ) : (

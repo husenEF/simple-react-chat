@@ -9,13 +9,10 @@ export const setLoading = (status = false) => ({
 export const setUser = (data) => ({ type: SET_USER, value: data });
 
 export const checkUser = () => async (dispatch) => {
-    auth().onAuthStateChanged((authenticate) => {
+  auth().onAuthStateChanged((authenticate) => {
     console.log({ authenticate });
     if (authenticate) {
-      dispatch(setUser(authenticate));
-      // this, this.props.navigation.replace("Home");
-    } else {
-      // this, this.props.navigation.replace("Signin");
+      dispatch(setUser({ uid: authenticate.uid, email: authenticate.email }));
     }
   });
 };

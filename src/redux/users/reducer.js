@@ -16,6 +16,7 @@ const userReducer = (state = initalState, action) => {
     case SET_LOADING:
       return { ...state, loading: action.value };
     case SET_USER:
+      console.log("s", action);
       return { ...state, user: action.value, isLogin: true, loading: false };
     default:
       return state;

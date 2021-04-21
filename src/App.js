@@ -42,7 +42,7 @@ const PublicRoute = ({ component: Component, authenticated, ...rest }) => {
         authenticated === false ? (
           <Component {...props} />
         ) : (
-          <Redirect to="/chat/1" />
+          <Redirect to="/" />
         )
       }
     />
@@ -51,16 +51,14 @@ const PublicRoute = ({ component: Component, authenticated, ...rest }) => {
 
 const App = () => {
   const dispatch = useDispatch();
-  // const [loading, setLoading] = useState(true);
-  const [authenticated, setAuthenticated] = useState(false);
-  const [user, setUser] = useState(null);
 
-  const { loading, isLogin, users } = useSelector((state) => state.user);
-  console.log("app", { loading, isLogin, users });
+  const { isLogin, loading, user } = useSelector((state) => state.user);
+  console.log("app", { user, isLogin, loading });
 
   useState(() => {
     dispatch(checkUser());
   }, []);
+
   return (
     <div
       className="md:container md:mx-auto p-5 bg-yellow-200 h-screen"
@@ -74,17 +72,17 @@ const App = () => {
             <Route exact path="/" component={Home} />
             <PrivateRoute
               path="/chat/:id"
-              authenticated={authenticated}
+              authenticated={isLogin}
               component={Chat}
             />
             <PublicRoute
               path="/signup"
-              authenticated={authenticated}
+              authenticated={isLogin}
               component={Signup}
             />
             <PublicRoute
               path="/login"
-              authenticated={authenticated}
+              authenticated={isLogin}
               component={Login}
             />
           </Switch>

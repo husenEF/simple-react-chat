@@ -10,6 +10,8 @@ class Login extends Component {
     password: "",
   };
 
+  componentDidMount() {}
+
   handleChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   };
@@ -93,10 +95,14 @@ class Login extends Component {
                 type="submit"
                 className="bg-blue-400 mb-3 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded mx-auto "
               >
-                Sign up
+                Login
               </button>
               <p className="text-center">Or</p>
-              <button onClick={this.googleSignIn} type="button" className="mb-4">
+              <button
+                onClick={this.googleSignIn}
+                type="button"
+                className="mb-4"
+              >
                 Sign up with Google
               </button>
               <p className="text-center">

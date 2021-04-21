@@ -1,4 +1,10 @@
-import { GET_DATA, SEND_DATA, SET_LOADING, SET_USER } from "./constan";
+import {
+  CHECK_AUTH,
+  GET_DATA,
+  SEND_DATA,
+  SET_LOADING,
+  SET_USER,
+} from "./constan";
 
 const initalState = {
   user: null,
@@ -18,6 +24,8 @@ const userReducer = (state = initalState, action) => {
     case SET_USER:
       console.log("s", action);
       return { ...state, user: action.value, isLogin: true, loading: false };
+    case CHECK_AUTH:
+      return { ...state, user: null, isLogin: false, loading: false };
     default:
       return state;
   }

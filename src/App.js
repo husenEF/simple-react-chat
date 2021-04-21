@@ -13,7 +13,7 @@ import { checkUser } from "./redux/users/action";
 //firebase
 // import { auth, db } from "./services/firebase";
 
-import { Home, Chat, Login, Signup } from "./pages";
+import { Home, Chat, Login, Signup, Logout } from "./pages";
 
 import "./App.css";
 
@@ -39,11 +39,7 @@ const PublicRoute = ({ component: Component, authenticated, ...rest }) => {
     <Route
       {...rest}
       render={(props) =>
-        authenticated === false ? (
-          <Component {...props} />
-        ) : (
-          <Redirect to="/" />
-        )
+        authenticated === false ? <Component {...props} /> : <Redirect to="/" />
       }
     />
   );
@@ -69,7 +65,8 @@ const App = () => {
       ) : (
         <Router>
           <Switch>
-            <Route exact path="/" component={Home} />
+            <PrivateRoute exact path="/" component={Home} authenticated={isLogin}/>
+            <Route exact path="/logout" component={Logout} />
             <PrivateRoute
               path="/chat/:id"
               authenticated={isLogin}

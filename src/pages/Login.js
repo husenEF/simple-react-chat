@@ -1,7 +1,9 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { signin, signInWithGoogle } from "../helpers/auth";
+import { signinWithGoogle } from "../redux/users/action";
 
 class Login extends Component {
   state = {
@@ -10,7 +12,9 @@ class Login extends Component {
     password: "",
   };
 
-  componentDidMount() {}
+  componentDidMount() {
+    console.log(this.props);
+  }
 
   handleChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
@@ -116,4 +120,9 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapDispathToProps = (dispatch) => {
+  return {
+    withGoogle: () => dispatch(signinWithGoogle()),
+  };
+};
+export default connect(null, mapDispathToProps)(Login);

@@ -3,7 +3,7 @@ import userReducer from "./users/reducer";
 import chatReducer from "./chat/reducer";
 
 const initialState = {
-  isLogin: false,
+  isLogin: true,
   counter: 0,
 };
 

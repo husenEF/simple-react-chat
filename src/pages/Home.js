@@ -11,15 +11,18 @@ class Home extends Component {
   }
 
   async firstLoad() {
+    console.log("first load");
     try {
       const listUser = [];
       await db.ref("users").on("value", (snapshot) => {
         snapshot.forEach((childSnapshot) => {
+          console.log({ childSnapshot });
           const a = childSnapshot.val();
+          console.log({ a });
           listUser.push(a);
         });
       });
-      
+
       this.setState({ userlist: listUser });
     } catch (error) {
       // console.log({ error });
